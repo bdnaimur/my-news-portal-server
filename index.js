@@ -58,14 +58,27 @@ client.connect((err) => {
       res.send(items);
     });
   });
+  // get categories using params
+  app.get('/categories/:id', (req, res) => {
+    categoryCollection.find({_id: ObjectId(req.params.id)})
+    .toArray ( (err, documents) =>{
+      res.send(documents[0]);
+    })
+  })
   // category post
+  // app.post("/addProduct", (req, res) => {
+  //   const product = req.body;
+  //   productCollection.insertOne(product)
+  //   .then(result => {
+  //     res.redirect('/')
+  //   })
+  // })
   app.post("/addCategory", (req, res) => {
     const newEvent = req.body;
     console.log("adding new event: ", newEvent);
     categoryCollection.insertOne(newEvent)
     .then((result) => {
-      console.log("inserted count", result);
-      res.send(result.insertedId);
+      res.redirect('http://localhost:9999/category');
     });
   });
   // category delete
@@ -88,7 +101,8 @@ client.connect((err) => {
       $set: {category: req.body.category}
     })
     .then (result => {
-      res.send(result.modifiedCount > 0)
+      console.log(result);
+      res.send(result)
     })
   })
 
