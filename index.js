@@ -39,6 +39,13 @@ client.connect((err) => {
       res.send(items);
     });
   });
+  // get posts using params
+  app.get('/posts/:id', (req, res) => {
+    postCollection.find({_id: ObjectId(req.params.id)})
+    .toArray ( (err, documents) =>{
+      res.send(documents[0]);
+    })
+  })
   // post delete
   app.delete('/deletePost/:id', (req, res) => {
     const id = (req.params.id);
@@ -49,6 +56,19 @@ client.connect((err) => {
       if(documents.deletedCount>0){
       res.send("Deleted");
       }
+    })
+  })
+  // update post
+  
+  app.patch('/updatePost/:id', (req, res) => {
+    console.log(req.body);
+    postCollection.updateOne({_id: ObjectId(req.params.id)},
+    {
+      $set: {title: req.body.title, description: req.body.description, category: req.body.category, imgUrl: req.body.imgUrl}
+    })
+    .then (result => {
+      console.log(result);
+      res.send(result)
     })
   })
   // Category
@@ -66,13 +86,6 @@ client.connect((err) => {
     })
   })
   // category post
-  // app.post("/addProduct", (req, res) => {
-  //   const product = req.body;
-  //   productCollection.insertOne(product)
-  //   .then(result => {
-  //     res.redirect('/')
-  //   })
-  // })
   app.post("/addCategory", (req, res) => {
     const newEvent = req.body;
     console.log("adding new event: ", newEvent);
@@ -123,6 +136,13 @@ client.connect((err) => {
       res.send(items);
     });
   });
+    // get user using params
+    app.get('/users/:id', (req, res) => {
+      userCollection.find({_id: ObjectId(req.params.id)})
+      .toArray ( (err, documents) =>{
+        res.send(documents[0]);
+      })
+    })
   // delete user
   app.delete('/deleteUser/:id', (req, res) => {
     const id = (req.params.id);
@@ -133,6 +153,19 @@ client.connect((err) => {
       if(documents.deletedCount>0){
       res.send("Deleted");
       }
+    })
+  })
+  // update users
+   // user Update
+   app.patch('/updateUser/:id', (req, res) => {
+    console.log(req.body);
+    userCollection.updateOne({_id: ObjectId(req.params.id)},
+    {
+      $set: {fName: req.body.fName, lName: req.body.lName, username: req.body.username, role: req.body.role}
+    })
+    .then (result => {
+      console.log(result);
+      res.send(result)
     })
   })
 });
