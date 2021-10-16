@@ -91,7 +91,8 @@ client.connect((err) => {
     console.log("adding new event: ", newEvent);
     categoryCollection.insertOne(newEvent)
     .then((result) => {
-      res.redirect('http://localhost:9999/category');
+      console.log(result.insertedId);
+      res.send(result.insertedId);
     });
   });
   // category delete
