@@ -39,6 +39,14 @@ client.connect((err) => {
       res.send(items);
     });
   });
+  // get posts with search
+  app.get("/postSearch", (req, res) => {
+  const quary = {description:{$in:/^set/}}
+    postCollection.find(quary)
+    .toArray((err, items) => {
+      res.send(items);
+    });
+  });
   // get posts using params
   app.get('/posts/:id', (req, res) => {
     postCollection.find({_id: ObjectId(req.params.id)})
